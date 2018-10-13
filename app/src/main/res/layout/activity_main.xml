@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/header"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@color/header"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/drawer_button"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/ic_menu_drawer"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/header_text"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:background="@color/header"
+        android:gravity="center"
+        android:layout_marginStart="8dp"
+        android:text="@string/video"
+        android:textColor="@color/text"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/drawer_button" />
+</android.support.constraint.ConstraintLayout>
