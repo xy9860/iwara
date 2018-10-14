@@ -3,6 +3,6 @@
     <color name="header">#2979ff</color>
     <color name="text">#e3f2fd</color>
     <color name="colorPrimary">#2979ff</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimaryDark">#00574b</color>
     <color name="colorAccent">#D81B60</color>
 </resources>

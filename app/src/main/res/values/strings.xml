@@ -3,4 +3,6 @@
     <string name="video">视频</string>
     <string name="picture">图片</string>
     <string name="subscribe">订阅</string>
+    <string name="navigation_drawer_open">订阅1</string>
+    <string name="navigation_drawer_close">订阅2</string>
 </resources>

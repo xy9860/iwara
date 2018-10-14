@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="single">
+    <item
+        android:id="@+id/video"
+        android:title="@string/video"/>
+    <item
+        android:id="@+id/picture"
+        app:itemTextColor="#000000"
+        android:title="@string/picture"/>
+    <item
+        android:id="@+id/subscribe"
+        android:title="@string/subscribe"/>
+    </group>
+</menu>
