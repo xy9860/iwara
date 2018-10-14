@@ -8,6 +8,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +21,9 @@ import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
 import com.xy9860.iwara.data.Data;
+import com.xy9860.iwara.data.ItemDecoration;
 import com.xy9860.iwara.data.MyAdapter;
+import com.xy9860.iwara.data.Myad;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -59,7 +63,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         LinearLayout list_content = View.inflate(this,R.layout.content_items, null).findViewById(R.id.list_content);
-        ListView list_items = list_content.findViewById(R.id.list_items);
+        //ListView list_items = list_content.findViewById(R.id.list_items);
+        RecyclerView list_items_r = list_content.findViewById(R.id.list_items_rq);
         items_content.addView(list_content,lp);
 
         mContext = MainActivity.this;
@@ -70,7 +75,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mData.add(new Data("鱼说", "你是鱼么?", R.mipmap.ic_launcher));
         mData.add(new Data("马说", "你是马么?", R.mipmap.ic_launcher));
         mAdapter = new MyAdapter((LinkedList<Data>) mData, mContext);
-        list_items.setAdapter(mAdapter);
+
+        list_items_r.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        list_items_r.addItemDecoration(new ItemDecoration(this));
+
+        Myad mad = new Myad(mData);
+        list_items_r.setAdapter(mad);
     }
 
     @Override
@@ -83,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
