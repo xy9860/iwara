@@ -18,11 +18,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jaeger.library.StatusBarUtil;
+import com.xy9860.iwara.data.Common;
 import com.xy9860.iwara.data.Data;
 import com.xy9860.iwara.data.ItemDecoration;
 import com.xy9860.iwara.data.MyAdapter;
@@ -37,19 +40,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Context mContext;
     private MyAdapter mAdapter = null;
     private Intent intent;
-
+    private Common common;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        /*初始化*/
+        InitData();
+        Init();
         /*标题栏*/
         Toolbar toolbar = findViewById(R.id.header);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         /*设置状态栏颜色*/
-        Integer mStatusBarColor = getResources().getColor(R.color.colorPrimary);
-        StatusBarUtil.setColorForDrawerLayout(MainActivity.this,(DrawerLayout) findViewById(R.id.drawer_main),mStatusBarColor);
+        common.SetStatusBar(mContext,findViewById(R.id.drawer_main),50);
+        //Integer mStatusBarColor = getResources().getColor(R.color.colorPrimary);
+        //StatusBarUtil.setColorForDrawerLayout(MainActivity.this,,mStatusBarColor);
         /*抽屉*/
         DrawerLayout drawer = findViewById(R.id.drawer_main);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -66,8 +72,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.drawer_nav);
         navigationView.setNavigationItemSelectedListener(this);
         /*首页*/
-        InitData();
-        Init();
         FrameLayout items_content = findViewById(R.id.items_content);
         RecyclerView list_items = LayoutInflater.from(mContext).inflate(R.layout.content_items,items_content,true).findViewById(R.id.list_items);
         list_items.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
@@ -87,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     public void Init() {
         this.mContext = MainActivity.this;
+        this.common = new Common();
         this.intent = new Intent(mContext,ShowItem.class);
         this.mAdapter = new MyAdapter(mData);
     }
