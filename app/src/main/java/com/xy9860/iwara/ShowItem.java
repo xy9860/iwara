@@ -18,6 +18,7 @@ public class ShowItem extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
+        /*fsaffs*/
         overridePendingTransition(R.anim.index_in,R.anim.show_item_out);
     }
 }
