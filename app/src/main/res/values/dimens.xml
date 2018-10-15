@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="x10">10px</dimen>
+    <dimen name="x2">2dp</dimen>
+    <dimen name="x3">3dp</dimen>
+    <dimen name="x5">5dp</dimen>
 </resources>

@@ -19,7 +19,7 @@
         android:layout_centerInParent="true"
         android:layout_gravity="start"
         android:text="@string/video"
-        android:textColor="@color/text"
+        android:textColor="@color/text_light"
         android:textSize="20sp"
         android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>

@@ -1,11 +1,13 @@
 package com.xy9860.iwara.data;
 
+import android.graphics.Bitmap;
+
 public class Data {
     private String Auther;
     private String Title;
-    private Integer Thumbnail;
+    private Bitmap Thumbnail;
 
-    public Data(String Auther, String Title, Integer Thumbnail) {
+    public Data(String Auther, String Title, Bitmap Thumbnail) {
         this.Auther = Auther;
         this.Title = Title;
         this.Thumbnail = Thumbnail;
@@ -19,7 +21,7 @@ public class Data {
         return Title;
     }
 
-    Integer getaThumbnail() { return Thumbnail;}
+    Bitmap getaThumbnail() { return Thumbnail;}
 
     public void setaAuther(String Auther) {
         this.Auther = Auther;
@@ -29,7 +31,7 @@ public class Data {
         this.Title = Title;
     }
 
-    public void setaThumbnail(Integer Thumbnail) {
+    public void setaThumbnail(Bitmap Thumbnail) {
         this.Thumbnail = Thumbnail;
     }
 }
