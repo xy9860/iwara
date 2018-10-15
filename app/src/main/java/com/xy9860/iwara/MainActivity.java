@@ -1,6 +1,7 @@
 package com.xy9860.iwara;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -35,21 +36,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private List<Data> mData = null;
     private Context mContext;
     private MyAdapter mAdapter = null;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mContext = MainActivity.this;
-        /*drawer*/
+
+        /*标题栏*/
         Toolbar toolbar = findViewById(R.id.header);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        /*设置状态栏颜色*/
         Integer mStatusBarColor = getResources().getColor(R.color.colorPrimary);
         StatusBarUtil.setColorForDrawerLayout(MainActivity.this,(DrawerLayout) findViewById(R.id.drawer_main),mStatusBarColor);
+        /*抽屉*/
         DrawerLayout drawer = findViewById(R.id.drawer_main);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         toggle.setDrawerIndicatorEnabled(false);
         toggle.setHomeAsUpIndicator(R.drawable.ic_menu_drawer);
         toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
@@ -63,27 +66,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.drawer_nav);
         navigationView.setNavigationItemSelectedListener(this);
         /*首页*/
-
-        initData();
+        InitData();
+        Init();
         FrameLayout items_content = findViewById(R.id.items_content);
-        //FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        //LinearLayout list_content = View.inflate(this,R.layout.content_items, null).findViewById(R.id.list_content);
-        //ListView list_items = list_content.findViewById(R.id.list_items);
-        //items_content.addView(list_content,lp);
-
         RecyclerView list_items = LayoutInflater.from(mContext).inflate(R.layout.content_items,items_content,true).findViewById(R.id.list_items);
         list_items.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         list_items.addItemDecoration(new ItemDecoration(mContext));
-        mAdapter = new MyAdapter(mData);
         list_items.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
-                Toast.makeText(mContext, "您点击了" + position + "行", Toast.LENGTH_SHORT).show();
+                //start activity
+                Data item = mData.get(position);
+                String uri = item.getaTitle();
+                ShowItem(uri);
+                //Toast.makeText(mContext, "您点击了" + position + "行", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
-    public void initData(){
+    public void Init() {
+        this.mContext = MainActivity.this;
+        this.intent = new Intent(mContext,ShowItem.class);
+        this.mAdapter = new MyAdapter(mData);
+    }
+    public void InitData(){
         AssetManager am = getAssets();
         InputStream is = null;
         try {
@@ -99,6 +106,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         data.add(new Data("鱼说", "你是鱼么?", pic));
         data.add(new Data("马说", "你是马么?", pic));
         this.mData = data;
+    }
+    public void ShowItem(String uri) {
+        intent.putExtra("URI",uri);
+        startActivity(intent);
+        overridePendingTransition(R.anim.show_item_in,R.anim.index_out);
     }
     @Override
     public void onBackPressed() {

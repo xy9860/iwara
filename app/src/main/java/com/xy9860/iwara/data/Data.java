@@ -13,15 +13,15 @@ public class Data {
         this.Thumbnail = Thumbnail;
     }
 
-    String getaAuther() {
+    public String getaAuther() {
         return Auther;
     }
 
-    String getaTitle() {
+    public String getaTitle() {
         return Title;
     }
 
-    Bitmap getaThumbnail() { return Thumbnail;}
+    public Bitmap getaThumbnail() { return Thumbnail;}
 
     public void setaAuther(String Auther) {
         this.Auther = Auther;
