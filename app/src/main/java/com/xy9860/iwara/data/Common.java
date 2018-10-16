@@ -12,9 +12,15 @@ public class Common {
     public void SetStatusBar(Context mContext,int alpha) {
         Integer mStatusBarColor = mContext.getResources().getColor(R.color.colorPrimary);
         StatusBarUtil.setColor((Activity) mContext,mStatusBarColor,alpha);
+        //StatusBarUtil.setTranslucent((Activity) mContext,alpha);
+    }
+    public void SetNavBar(Activity activity) {
+        Integer mNavColor = activity.getResources().getColor(R.color.colorPrimary);
+        activity.getWindow().setNavigationBarColor(mNavColor);
     }
     public void SetStatusBar(Context mContext, View view,int alpha) {
         Integer mStatusBarColor = mContext.getResources().getColor(R.color.colorPrimary);
+        //StatusBarUtil.setTranslucent((Activity) mContext,alpha);
         StatusBarUtil.setColorForDrawerLayout((Activity) mContext, (DrawerLayout) view, mStatusBarColor,alpha);
     }
     public void PlayVideo() {
