@@ -24,7 +24,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jaeger.library.StatusBarUtil;
 import com.xy9860.iwara.data.Common;
 import com.xy9860.iwara.data.Data;
 import com.xy9860.iwara.data.ItemDecoration;
@@ -58,8 +57,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         /*设置状态栏颜色*/
-        common.SetStatusBar(mContext,findViewById(R.id.drawer_main),30);
-        common.SetNavBar(this);
+        common.SetStatusBar(findViewById(R.id.drawer_main));
+        common.SetNavBar();
         /*抽屉*/
         drawer = findViewById(R.id.drawer_main);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -98,8 +97,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.mHandler = new MyHandler(activity);
         this.mData = InitData();
         this.mAdapter = new MyAdapter(mData);
-        this.mContext = MainActivity.this;
-        this.common = new Common();
+        this.mContext = this;
+        this.common = new Common(this);
         this.intent = new Intent(mContext,ShowItem.class);
     }
     public List<Data> InitData(){

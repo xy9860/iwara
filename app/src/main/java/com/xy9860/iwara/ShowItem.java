@@ -21,8 +21,8 @@ public class ShowItem extends SwipeBackActivity {
         /*初始化*/
         Init();
         /*设置状态栏颜色*/
-        common.SetStatusBar(mContext,30);
-        common.SetNavBar(this);
+        common.SetStatusBar();
+        common.SetNavBar();
         /*滑动返回*/
         setSwipeBackEnable(true);
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
@@ -36,7 +36,7 @@ public class ShowItem extends SwipeBackActivity {
     }
     public void Init() {
         this.mContext = ShowItem.this;
-        this.common = new Common();
+        this.common = new Common(this);
     }
     @Override
     public void onBackPressed() {
