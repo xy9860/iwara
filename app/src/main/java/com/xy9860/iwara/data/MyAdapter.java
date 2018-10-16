@@ -18,11 +18,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView thumbnail;
-        TextView author,title;
+        TextView author,title,like,play_times;
         ViewHolder(View view) {
             super(view);
             author = view.findViewById(R.id.item_author);
             title = view.findViewById(R.id.item_title);
+            like = view.findViewById(R.id.like);
+            play_times = view.findViewById(R.id.play_times);
             thumbnail = view.findViewById(R.id.thumbnail);
         }
     }
@@ -42,6 +44,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         Data item = data.get(position);
         holder.author.setText(item.getaAuther());
         holder.title.setText(item.getaTitle());
+        holder.like.setText(String.valueOf(item.getaLike()));
+        holder.play_times.setText(String.valueOf(item.getaPlayTimes()));
         holder.thumbnail.setImageBitmap(item.getaThumbnail());
         final int finalPosition = position;
         holder.itemView.setOnClickListener(new View.OnClickListener() {

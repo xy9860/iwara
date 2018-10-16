@@ -15,16 +15,17 @@
         tools:replace="android:allowBackup">
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ShowItem"
-            android:theme="@style/AppTheme">
+            android:launchMode="singleTask"
+            android:theme="@style/ShowItemTheme" />
+        <activity android:name=".LaunchActivity"
+            android:theme="@style/LaunchTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

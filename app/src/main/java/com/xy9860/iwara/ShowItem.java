@@ -3,14 +3,17 @@ package com.xy9860.iwara;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.xy9860.iwara.data.Common;
 
-public class ShowItem extends AppCompatActivity {
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
+
+public class ShowItem extends SwipeBackActivity {
     private Context mContext;
     private Common common;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,9 +22,15 @@ public class ShowItem extends AppCompatActivity {
         Init();
         /*设置状态栏颜色*/
         common.SetStatusBar(mContext,50);
+        /*滑动返回*/
+        setSwipeBackEnable(true);
+        SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.setEdgeSize(50);
+
         Intent item = getIntent();
         String uri = item.getStringExtra("URI");
-        TextView textView = findViewById(R.id.show_item_title);
+        TextView textView = (TextView) findViewById(R.id.show_item_title);
         textView.setText(uri);
     }
     public void Init() {

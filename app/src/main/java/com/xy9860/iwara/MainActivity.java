@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,13 +20,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jaeger.library.StatusBarUtil;
 import com.xy9860.iwara.data.Common;
 import com.xy9860.iwara.data.Data;
 import com.xy9860.iwara.data.ItemDecoration;
@@ -32,21 +31,26 @@ import com.xy9860.iwara.data.MyAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private List<Data> mData = null;
+    private static boolean isExit=false;
+    private MyHandler mHandler;
+    private DrawerLayout drawer;
+
+    private List<Data> mData;
+    private MyAdapter mAdapter;
     private Context mContext;
-    private MyAdapter mAdapter = null;
     private Intent intent;
     private Common common;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         /*初始化*/
-        InitData();
         Init();
         /*标题栏*/
         Toolbar toolbar = findViewById(R.id.header);
@@ -54,17 +58,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         /*设置状态栏颜色*/
         common.SetStatusBar(mContext,findViewById(R.id.drawer_main),50);
-        //Integer mStatusBarColor = getResources().getColor(R.color.colorPrimary);
-        //StatusBarUtil.setColorForDrawerLayout(MainActivity.this,,mStatusBarColor);
         /*抽屉*/
-        DrawerLayout drawer = findViewById(R.id.drawer_main);
+        drawer = findViewById(R.id.drawer_main);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         toggle.setDrawerIndicatorEnabled(false);
         toggle.setHomeAsUpIndicator(R.drawable.ic_menu_drawer);
         toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DrawerLayout drawer = findViewById(R.id.drawer_main);
                 drawer.openDrawer(GravityCompat.START);
             }
         });
@@ -89,13 +90,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
+
     public void Init() {
+        WeakReference<MainActivity> activity = new WeakReference<>(MainActivity.this);
+        this.mHandler = new MyHandler(activity);
+        this.mData = InitData();
+        this.mAdapter = new MyAdapter(mData);
         this.mContext = MainActivity.this;
         this.common = new Common();
         this.intent = new Intent(mContext,ShowItem.class);
-        this.mAdapter = new MyAdapter(mData);
     }
-    public void InitData(){
+    public List<Data> InitData(){
         AssetManager am = getAssets();
         InputStream is = null;
         try {
@@ -105,25 +110,59 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         Bitmap pic = BitmapFactory.decodeStream(is);
         List<Data> data = new LinkedList<>();
-        data.add(new Data("狗说", "你是狗么?", pic));
-        data.add(new Data("牛说", "你是牛么?", pic));
-        data.add(new Data("鸭说", "你是鸭么?", pic));
-        data.add(new Data("鱼说", "你是鱼么?", pic));
-        data.add(new Data("马说", "你是马么?", pic));
-        this.mData = data;
+        Data mdata = new Data();
+        mdata.setAuther("xy9860");
+        mdata.setaTitle("标题");
+        mdata.setaLike(0);
+        mdata.setaPlayTimes(0);
+        mdata.setaUri("0");
+        mdata.setaThumbnail(pic);
+        data.add(mdata);
+        data.add(new Data("狗说", "你是狗么?",1,1,"1", pic));
+        data.add(new Data("牛说", "你是牛么?",2,2,"2", pic));
+        data.add(new Data("鸭说", "你是鸭么?",3,3,"3", pic));
+        data.add(new Data("鱼说", "你是鱼么?",4,4,"4", pic));
+        data.add(new Data("马说", "你是马么?",5,5,"5", pic));
+        return data;
     }
     public void ShowItem(String uri) {
         intent.putExtra("URI",uri);
         startActivity(intent);
         overridePendingTransition(R.anim.show_item_in,R.anim.index_out);
     }
+
+    static class MyHandler extends Handler {
+        private MainActivity activity;
+        MyHandler(WeakReference<MainActivity> ref) {
+            activity = ref.get();
+        }
+        @Override
+        public void handleMessage(Message msg) {
+            if(activity != null) {
+                super.handleMessage(msg);
+                isExit = false;
+            }
+        }
+    }
+
+    private void exit(){
+        if(!isExit){
+            isExit=true;
+            Toast.makeText(getApplicationContext(),"再按一次退出程序",Toast.LENGTH_SHORT).show();
+            mHandler.sendEmptyMessageDelayed(0,2000);
+        }
+        else{
+            finish();
+            System.exit(0);
+        }
+    }
+
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_main);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            exit();
         }
     }
 
@@ -139,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.subscribe) {
             title.setText(R.string.subscribe);
         }
-        DrawerLayout drawer = findViewById(R.id.drawer_main);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

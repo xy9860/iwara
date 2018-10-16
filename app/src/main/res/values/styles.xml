@@ -5,4 +5,13 @@
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
 </style>
+
+<style name="LaunchTheme" parent="AppTheme">
+    <item name="android:windowFullscreen">true</item>
+    <item name="android:windowBackground">@mipmap/ic_launcher</item>
+</style>
+
+<style name="ShowItemTheme" parent="AppTheme">
+    <item name="android:windowIsTranslucent">true</item>
+</style>
 </resources>
