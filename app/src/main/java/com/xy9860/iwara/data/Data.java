@@ -11,6 +11,7 @@ public class Data {
     private Bitmap Thumbnail;
 
     public Data() {}
+
     public Data(String Auther, String Title, Integer Like, Integer PlayTimes, String uri, Bitmap Thumbnail) {
         this.Auther = Auther;
         this.Title = Title;

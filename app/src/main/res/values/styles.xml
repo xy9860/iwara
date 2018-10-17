@@ -4,11 +4,17 @@
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
+    <item name="android:navigationBarColor">@color/colorPrimary</item>
+    <item name="android:statusBarColor">@color/colorPrimary</item>
 </style>
 
 <style name="LaunchTheme" parent="AppTheme">
-    <item name="android:navigationBarColor">@color/colorPrimary</item>
     <item name="android:windowBackground">@color/colorPrimary</item>
+</style>
+
+<style name="ToolTheme" parent="AppTheme">
+    <item name="android:textColorPrimary">@color/textColorPrimary</item>
+    <item name="android:textColorSecondary">@color/textColorSecondary</item>
 </style>
 
 <style name="ShowItemTheme" parent="AppTheme">

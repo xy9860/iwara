@@ -18,17 +18,10 @@ public class ShowItem extends SwipeBackActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_item);
+
         /*初始化*/
         Init();
-        /*设置状态栏颜色*/
-        common.SetStatusBar();
-        common.SetNavBar();
-        /*滑动返回*/
-        setSwipeBackEnable(true);
-        SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
-        mSwipeBackLayout.setEdgeSize(50);
-
+        /*视频播放*/
         Intent item = getIntent();
         String uri = item.getStringExtra("URI");
         TextView textView = (TextView) findViewById(R.id.show_item_title);
@@ -37,10 +30,17 @@ public class ShowItem extends SwipeBackActivity {
     public void Init() {
         this.mContext = ShowItem.this;
         this.common = new Common(this);
+        /*设置状态栏透明*/
+        common.SetStatusBar();
+        /*滑动返回*/
+        setSwipeBackEnable(true);
+        SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.setEdgeSize(50);
     }
     @Override
     public void onBackPressed() {
-        finish();
-        overridePendingTransition(R.anim.index_in,R.anim.show_item_out);
+        scrollToFinishActivity();
+        //overridePendingTransition(R.anim.index_in,R.anim.show_item_out);
     }
 }
