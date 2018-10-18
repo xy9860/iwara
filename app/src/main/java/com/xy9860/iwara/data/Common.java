@@ -1,6 +1,7 @@
 package com.xy9860.iwara.data;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,7 @@ import android.view.View;
 import com.jaeger.library.StatusBarUtil;
 import com.xy9860.iwara.R;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -24,6 +26,7 @@ public class Common {
     }
     public List<Data> GetData(Integer mContent, Boolean refresh, Integer page) {
         List<Data> listData = new LinkedList<>();
+        File file = new File(activity.getFilesDir(),"info");
         Data mdata = new Data();
         if (mContent == 1 || refresh || page == 1){
             AssetManager am = activity.getAssets();
