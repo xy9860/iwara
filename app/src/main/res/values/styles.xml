@@ -9,7 +9,7 @@
 </style>
 
 <style name="LaunchTheme" parent="AppTheme">
-    <item name="android:windowBackground">@drawable/launcher_background</item>
+    <item name="android:windowBackground">@drawable/background</item>
 </style>
 
 <style name="ToolTheme" parent="AppTheme">

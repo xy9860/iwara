@@ -23,8 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="scalingPercent" value="55" />
-                                                <entry key="trimmed" value="true" />
+                                                <entry key="scalingPercent" value="50" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -35,8 +34,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="fafafa" />
-                                      <entry key="foregroundImage" value="D:\Download\favicon.png" />
+                                      <entry key="backgroundColor" value="2979ff" />
+                                      <entry key="foregroundImage" value="D:\Download\123.png" />
                                       <entry key="generateWebIcon" value="false" />
                                     </map>
                                   </option>

@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void ShowItem(String uri) {
         intent.putExtra("URI",uri);
         startActivity(intent);
-
         overridePendingTransition(R.anim.show_item_in,R.anim.index_out);
     }
     static class MyHandler extends Handler {

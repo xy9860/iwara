@@ -40,7 +40,7 @@ public class ShowItem extends SwipeBackActivity {
     }
     @Override
     public void onBackPressed() {
-        scrollToFinishActivity();
-        //overridePendingTransition(R.anim.index_in,R.anim.show_item_out);
+        finish();
+        overridePendingTransition(R.anim.index_in,R.anim.show_item_out);
     }
 }
