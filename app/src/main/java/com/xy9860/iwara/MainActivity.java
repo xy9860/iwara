@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     private Toolbar mTitle;
     private ProgressBar loading;
-    private RecyclerView list_items;
 
     private MyHandler mHandler;
     private Common common;
@@ -43,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MyAdapter.OnItemClickListener itemclick;
     private Context mContext;
     private Intent intent;
+    private Thread thread;
+    private Integer page=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,20 +60,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         /*首页*/
         FrameLayout items_content = findViewById(R.id.items_content);
-        list_items = LayoutInflater.from(mContext).inflate(R.layout.content_items,items_content,true).findViewById(R.id.list_items);
+        RecyclerView list_items = LayoutInflater.from(mContext).inflate(R.layout.content_items, items_content, true).findViewById(R.id.list_items);
         list_items.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         list_items.addItemDecoration(new ItemDecoration(mContext));
         list_items.setAdapter(mAdapter);
-
-        new Thread(new Runnable() {
+        thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 Message msg = Message.obtain();
-                common.GetData(mData,1,0);
+                common.GetData(mData,1,page);
                 msg.what = 1;
                 mHandler.sendMessage(msg);
             }
-        }).start();
+        });
+        thread.start();
     }
 
     public void Init() {
@@ -106,11 +107,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.video) {
-            common.GetData(mData,1,1);
+            page = 0;
+            mData.clear();
+            mAdapter.notifyDataSetChanged();
+            //mAdapter.notifyDataSetChanged(0, mAdapter.getItemCount());
+            loading.setVisibility(ProgressBar.VISIBLE);
+            thread.start();
         } else if (id == R.id.picture) {
-            common.GetData(mData,1,2);
+            page = 1;
+            mData.clear();
+            mAdapter.notifyDataSetChanged();
+            loading.setVisibility(ProgressBar.VISIBLE);
+            thread.start();
         } else if (id == R.id.subscribe) {
-            mTitle.setTitle(R.string.subscribe);
+            page = 2;
+            mData.clear();
+            mAdapter.notifyDataSetChanged();
+            loading.setVisibility(ProgressBar.VISIBLE);
+            thread.start();
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -136,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case 1:
                         activity.mTitle.setTitle(R.string.subscribe);
                         activity.loading.setVisibility(ProgressBar.GONE);
-                        activity.mAdapter.notifyItemRangeChanged(0, activity.mAdapter.getItemCount());
+                        activity.mAdapter.notifyDataSetChanged();
                         activity.mAdapter.setOnItemClickListener(activity.itemclick);
                 }
             }

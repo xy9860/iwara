@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.jaeger.library.StatusBarUtil;
 import com.xy9860.iwara.R;
@@ -20,7 +19,6 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Common {
@@ -49,9 +47,7 @@ public class Common {
             Document document = Jsoup.connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36")
                     .timeout(20000).get();
-            //document = Jsoup.parse(document.toString().replace(" ", ""));
             Elements items = document.select("div[class*=node-video]");
-            //Toast.makeText(activity, String.valueOf(items.size()), Toast.LENGTH_SHORT).show();
             AssetManager am = activity.getAssets();
             InputStream is = null;
             try {
@@ -63,11 +59,13 @@ public class Common {
             for (Element item : items) {
                 Data mdata = new Data();
                 mdata.setAuther("xy9860");
-                mdata.setaLike(0);
-                mdata.setaPlayTimes(0);
                 mdata.setaUri("0");
                 mdata.setaThumbnail(pic);
                 String title = item.select("h3.title").select("a").first().text();
+                String like = item.select("div[class*=right-icon]").first().text();
+                String playtimes = item.select("div[class*=left-icon]").first().text();
+                mdata.setaLike(like);
+                mdata.setaPlayTimes(playtimes);
                 mdata.setaTitle(title);
                 mData.add(mdata);
             }

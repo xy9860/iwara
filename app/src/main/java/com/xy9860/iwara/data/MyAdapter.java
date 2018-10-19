@@ -44,8 +44,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         Data item = data.get(position);
         holder.author.setText(item.getaAuther());
         holder.title.setText(item.getaTitle());
-        holder.like.setText(String.valueOf(item.getaLike()));
-        holder.play_times.setText(String.valueOf(item.getaPlayTimes()));
+        holder.like.setText(item.getaLike());
+        holder.play_times.setText(item.getaPlayTimes());
         holder.thumbnail.setImageBitmap(item.getaThumbnail());
         final int finalPosition = position;
         holder.itemView.setOnClickListener(new View.OnClickListener() {

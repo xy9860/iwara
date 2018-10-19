@@ -5,14 +5,14 @@ import android.graphics.Bitmap;
 public class Data {
     private String Auther;
     private String Title;
-    private Integer Like;
-    private Integer PlayTimes;
+    private String Like;
+    private String PlayTimes;
     private String Uri;
     private Bitmap Thumbnail;
 
-    public Data() {}
+    Data() {}
 
-    public Data(String Auther, String Title, Integer Like, Integer PlayTimes, String uri, Bitmap Thumbnail) {
+    public Data(String Auther, String Title, String Like, String PlayTimes, String uri, Bitmap Thumbnail) {
         this.Auther = Auther;
         this.Title = Title;
         this.Like = Like;
@@ -27,10 +27,10 @@ public class Data {
     public String getaTitle() {
         return Title;
     }
-    public Integer getaLike() {
+    public String getaLike() {
         return Like;
     }
-    public Integer getaPlayTimes() {
+    public String getaPlayTimes() {
         return PlayTimes;
     }
     public String getaUri() {
@@ -38,20 +38,20 @@ public class Data {
     }
     public Bitmap getaThumbnail() { return Thumbnail;}
 
-    public void setAuther(String Auther) {
+    void setAuther(String Auther) {
         this.Auther = Auther;
     }
-    public void setaTitle(String Title) {
+    void setaTitle(String Title) {
         this.Title = Title;
     }
-    public void setaLike(Integer Like) {
+    void setaLike(String Like) {
         this.Like = Like;
     }
-    public void setaPlayTimes(Integer PlayTimes) { this.PlayTimes = PlayTimes; }
-    public void setaUri(String Uri) {
+    void setaPlayTimes(String PlayTimes) { this.PlayTimes = PlayTimes; }
+    void setaUri(String Uri) {
         this.Uri = Uri;
     }
-    public void setaThumbnail(Bitmap Thumbnail) {
+    void setaThumbnail(Bitmap Thumbnail) {
         this.Thumbnail = Thumbnail;
     }
 }
