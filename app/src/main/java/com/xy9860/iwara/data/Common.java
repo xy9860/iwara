@@ -1,15 +1,21 @@
 package com.xy9860.iwara.data;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.jaeger.library.StatusBarUtil;
 import com.xy9860.iwara.R;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,32 +30,28 @@ public class Common {
         this.activity = activity;
         this.Color = activity.getResources().getColor(R.color.colorPrimary);
     }
-    public List<Data> GetData(Integer mContent, Boolean refresh, Integer page) {
-        List<Data> listData = new LinkedList<>();
-        File file = new File(activity.getFilesDir(),"info");
-        Data mdata = new Data();
-        if (mContent == 1 || refresh || page == 1){
-            AssetManager am = activity.getAssets();
-            InputStream is = null;
-            try {
-                is = am.open("p1.jpg");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Bitmap pic = BitmapFactory.decodeStream(is);
-            mdata.setAuther("xy9860");
-            mdata.setaTitle("标题");
-            mdata.setaLike(0);
-            mdata.setaPlayTimes(0);
-            mdata.setaUri("0");
-            mdata.setaThumbnail(pic);
-            listData.add(mdata);
-            listData.add(new Data("狗说", "你是狗么?",1,1,"1", pic));
-            listData.add(new Data("牛说", "你是牛么?",2,2,"2", pic));
-            listData.add(new Data("鸭说", "你是鸭么?",3,3,"3", pic));
-            listData.add(new Data("鱼说", "你是鱼么?",4,4,"4", pic));
-            listData.add(new Data("马说", "你是马么?",5,5,"5", pic));
+    public void GetData(List<Data> mData, Integer mContent, Integer page) {
+        String content = null;
+        //File file = new File(activity.getFilesDir(),"info");
+        if (mContent == 1){
+            content = "videos";
         } else if (mContent == 2){
+            content = "images";
+        } else if (mContent == 3){
+            content = "subscriptions";
+        }
+        webCrawler(mData,content,page);
+    }
+    private void webCrawler(List<Data> mData,String content,Integer page) {
+        String url = "https://ecchi.iwara.tv/"+content+"?page="+page;
+        Log.i("url","请求结果:" + url);
+        try {
+            Document document = Jsoup.connect(url)
+                    .userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36")
+                    .timeout(20000).get();
+            //document = Jsoup.parse(document.toString().replace(" ", ""));
+            Elements items = document.select("div[class*=node-video]");
+            //Toast.makeText(activity, String.valueOf(items.size()), Toast.LENGTH_SHORT).show();
             AssetManager am = activity.getAssets();
             InputStream is = null;
             try {
@@ -58,20 +60,20 @@ public class Common {
                 e.printStackTrace();
             }
             Bitmap pic = BitmapFactory.decodeStream(is);
-            mdata.setAuther("dsp");
-            mdata.setaTitle("图片");
-            mdata.setaLike(0);
-            mdata.setaPlayTimes(0);
-            mdata.setaUri("0");
-            mdata.setaThumbnail(pic);
-            listData.add(mdata);
-            listData.add(new Data("狗说", "你是狗么?",6,6,"1", pic));
-            listData.add(new Data("牛说", "你是牛么?",7,7,"2", pic));
-            listData.add(new Data("鸭说", "你是鸭么?",8,8,"3", pic));
-            listData.add(new Data("鱼说", "你是鱼么?",9,9,"4", pic));
-            listData.add(new Data("马说", "你是马么?",10,10,"5", pic));
+            for (Element item : items) {
+                Data mdata = new Data();
+                mdata.setAuther("xy9860");
+                mdata.setaLike(0);
+                mdata.setaPlayTimes(0);
+                mdata.setaUri("0");
+                mdata.setaThumbnail(pic);
+                String title = item.select("h3.title").select("a").first().text();
+                mdata.setaTitle(title);
+                mData.add(mdata);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return listData;
     }
     public void SetStatusBar() {
         StatusBarUtil.setColorForSwipeBack(activity,Color,0);

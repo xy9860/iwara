@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.xy9860.iwara.data.Common;
@@ -25,18 +26,21 @@ import com.xy9860.iwara.data.ItemDecoration;
 import com.xy9860.iwara.data.MyAdapter;
 
 import java.lang.ref.WeakReference;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static boolean isExit=false;
     private DrawerLayout drawer;
     private Toolbar mTitle;
+    private ProgressBar loading;
     private RecyclerView list_items;
 
     private MyHandler mHandler;
     private Common common;
     private List<Data> mData;
     private MyAdapter mAdapter;
+    private MyAdapter.OnItemClickListener itemclick;
     private Context mContext;
     private Intent intent;
 
@@ -59,7 +63,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         list_items.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         list_items.addItemDecoration(new ItemDecoration(mContext));
         list_items.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Message msg = Message.obtain();
+                common.GetData(mData,1,0);
+                msg.what = 1;
+                mHandler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+    public void Init() {
+        WeakReference<MainActivity> activity = new WeakReference<>(MainActivity.this);
+        this.mTitle = findViewById(R.id.header);
+        this.loading = findViewById(R.id.loading);
+        this.drawer = findViewById(R.id.drawer_main);
+        this.mHandler = new MyHandler(activity);
+        this.common = new Common(this);
+        this.mData = new LinkedList<>();
+        this.mAdapter = new MyAdapter(mData);
+        this.itemclick = new MyAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
                 //start activity
@@ -67,17 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 String uri = item.getaUri();
                 ShowItem(uri);
             }
-        });
-    }
-
-    public void Init() {
-        WeakReference<MainActivity> activity = new WeakReference<>(MainActivity.this);
-        this.mTitle = findViewById(R.id.header);
-        this.drawer = findViewById(R.id.drawer_main);
-        this.mHandler = new MyHandler(activity);
-        this.common = new Common(this);
-        this.mData = common.GetData(1,true,1);
-        this.mAdapter = new MyAdapter(mData);
+        };
         this.mContext = this;
         this.intent = new Intent(mContext,ShowItem.class);
         /*设置状态栏透明*/
@@ -91,15 +106,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.video) {
-            mTitle.setTitle(R.string.video);
-            mData = common.GetData(1,true,1);
-            mAdapter = new MyAdapter(mData);
-            list_items.setAdapter(mAdapter);
+            common.GetData(mData,1,1);
         } else if (id == R.id.picture) {
-            mTitle.setTitle(R.string.picture);
-            mData = common.GetData(2,false,2);
-            mAdapter = new MyAdapter(mData);
-            list_items.setAdapter(mAdapter);
+            common.GetData(mData,1,2);
         } else if (id == R.id.subscribe) {
             mTitle.setTitle(R.string.subscribe);
         }
@@ -120,7 +129,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public void handleMessage(Message msg) {
             if(activity != null) {
                 super.handleMessage(msg);
-                isExit = false;
+                switch (msg.what) {
+                    case 0:
+                        isExit = false;
+                        break;
+                    case 1:
+                        activity.mTitle.setTitle(R.string.subscribe);
+                        activity.loading.setVisibility(ProgressBar.GONE);
+                        activity.mAdapter.notifyItemRangeChanged(0, activity.mAdapter.getItemCount());
+                        activity.mAdapter.setOnItemClickListener(activity.itemclick);
+                }
             }
         }
     }
