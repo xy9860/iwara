@@ -1,25 +1,14 @@
 package com.xy9860.iwara.data;
 
-import android.graphics.Bitmap;
-
 public class Data {
     private String Auther;
     private String Title;
     private String Like;
     private String PlayTimes;
     private String Uri;
-    private Bitmap Thumbnail;
+    private String Thumbnail;
 
     Data() {}
-
-    public Data(String Auther, String Title, String Like, String PlayTimes, String uri, Bitmap Thumbnail) {
-        this.Auther = Auther;
-        this.Title = Title;
-        this.Like = Like;
-        this.PlayTimes = PlayTimes;
-        this.Uri = uri;
-        this.Thumbnail = Thumbnail;
-    }
 
     public String getaAuther() {
         return Auther;
@@ -33,10 +22,8 @@ public class Data {
     public String getaPlayTimes() {
         return PlayTimes;
     }
-    public String getaUri() {
-        return Uri;
-    }
-    public Bitmap getaThumbnail() { return Thumbnail;}
+    public String getaUri() { return Uri; }
+    public String getaThumbnail() { return Thumbnail;}
 
     void setAuther(String Auther) {
         this.Auther = Auther;
@@ -51,7 +38,7 @@ public class Data {
     void setaUri(String Uri) {
         this.Uri = Uri;
     }
-    void setaThumbnail(Bitmap Thumbnail) {
+    void setaThumbnail(String Thumbnail) {
         this.Thumbnail = Thumbnail;
     }
 }

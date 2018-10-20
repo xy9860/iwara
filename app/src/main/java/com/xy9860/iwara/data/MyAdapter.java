@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.xy9860.iwara.R;
 
 import java.util.List;
@@ -46,7 +47,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.title.setText(item.getaTitle());
         holder.like.setText(item.getaLike());
         holder.play_times.setText(item.getaPlayTimes());
-        holder.thumbnail.setImageBitmap(item.getaThumbnail());
+        Picasso.get().load(item.getaThumbnail()).into(holder.thumbnail);
+        //holder.thumbnail.setImageBitmap(item.getaThumbnail());
         final int finalPosition = position;
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

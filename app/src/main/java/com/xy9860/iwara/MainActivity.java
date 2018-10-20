@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         list_items.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         list_items.addItemDecoration(new ItemDecoration(mContext));
         list_items.setAdapter(mAdapter);
+        /*加载数据*/
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -75,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
         thread.start();
     }
-
     public void Init() {
         WeakReference<MainActivity> activity = new WeakReference<>(MainActivity.this);
         this.mTitle = findViewById(R.id.header);
@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         if (id == R.id.video) {
             page = 0;
+            mTitle.setTitle(R.string.video);
             mData.clear();
             mAdapter.notifyDataSetChanged();
             //mAdapter.notifyDataSetChanged(0, mAdapter.getItemCount());
@@ -115,12 +116,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             thread.start();
         } else if (id == R.id.picture) {
             page = 1;
+            mTitle.setTitle(R.string.picture);
             mData.clear();
             mAdapter.notifyDataSetChanged();
             loading.setVisibility(ProgressBar.VISIBLE);
             thread.start();
         } else if (id == R.id.subscribe) {
             page = 2;
+            mTitle.setTitle(R.string.subscribe);
             mData.clear();
             mAdapter.notifyDataSetChanged();
             loading.setVisibility(ProgressBar.VISIBLE);
@@ -148,10 +151,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         isExit = false;
                         break;
                     case 1:
-                        activity.mTitle.setTitle(R.string.subscribe);
                         activity.loading.setVisibility(ProgressBar.GONE);
                         activity.mAdapter.notifyDataSetChanged();
                         activity.mAdapter.setOnItemClickListener(activity.itemclick);
+                        break;
                 }
             }
         }
